@@ -12,7 +12,8 @@ import { initialMembers, initialEvents } from "./mockData";
 
 export function MemberPortal({ memberId, onLogout }: { memberId: string; onLogout: () => void }) {
   const member = initialMembers.find((m) => m.id === memberId) ?? initialMembers[0];
-  const attendanceRate = Math.round((member.attended / (member.attended + member.missed || 1)) * 100);
+  const totalEvents = member.attended + member.missed;
+  const attendanceRate = totalEvents === 0 ? 0 : Math.round((member.attended / totalEvents) * 100);
   const upcoming = initialEvents.filter((e) => e.status === "Upcoming");
   const recent = [
     { name: "General Assembly", date: "May 26, 2026", time: "9:15 AM", status: "Present" },

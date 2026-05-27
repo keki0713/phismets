@@ -4,12 +4,14 @@ import { Eye, EyeOff, ArrowRight, CheckCircle2, Scan, Clock, FileText, Activity 
 import { Logo } from "./Logo";
 
 type Mode = "landing" | "login" | "signup" | "member" | "signupSuccess";
+
 /**
  * Authentication entry point for PHISMETS.
  * Renders the landing screen and handles routing to admin or member login and signup flows.
  * @param onAdminLogin - Callback fired when an officer successfully logs in
  * @param onMemberLogin - Callback fired when a member successfully logs in
  */
+
 export function AuthScreens({
   onAdminLogin,
   onMemberLogin,
@@ -23,6 +25,16 @@ export function AuthScreens({
   const [pw, setPw] = useState("phismets2026");
   const [memberId, setMemberId] = useState("");
   const [signupName, setSignupName] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  const VALID_EMAIL = "officer@phismets.org";
+  const VALID_PW = "phismets2026";
+  const handleLogin = () => {
+    if (!email.trim() || !pw.trim()) { setLoginError("Please enter both email and password."); return; }
+    if (email.trim().toLowerCase() !== VALID_EMAIL || pw !== VALID_PW) { setLoginError("Invalid email or password. Please try again."); return; }
+    setLoginError(null);
+    onAdminLogin();
+  };
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden" style={{ background: "radial-gradient(1200px 600px at 80% -10%, #145E32 0%, #083026 45%, #04150F 100%)" }}>
@@ -88,19 +100,25 @@ export function AuthScreens({
                     <>No account?{" "}<button onClick={() => setMode("signup")} className="text-[#145E32] underline underline-offset-4">Request access</button></>
                   }
                   submitLabel="Sign in"
-                  onSubmit={onAdminLogin}
+                  onSubmit={handleLogin}
                 >
                   <Field label="Email">
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="auth-input" placeholder="you@phismets.org" />
+                    <input value={email} onChange={(e) => { setEmail(e.target.value); setLoginError(null); }} type="email" className={`auth-input ${loginError ? "auth-input-error" : ""}`} placeholder="you@phismets.org" />
                   </Field>
                   <Field label="Password">
                     <div className="relative">
-                      <input value={pw} onChange={(e) => setPw(e.target.value)} type={showPw ? "text" : "password"} className="auth-input pr-10" placeholder="••••••••" />
+                      <input value={pw} onChange={(e) => { setPw(e.target.value); setLoginError(null); }} type={showPw ? "text" : "password"} className={`auth-input pr-10 ${loginError ? "auth-input-error" : ""}`} placeholder="••••••••" />
                       <button type="button" onClick={() => setShowPw((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#687280] hover:text-[#145E32]">
                         {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
                   </Field>
+                  {loginError && (
+                    <div role="alert" className="flex items-start gap-2 text-xs text-[#EF4444] bg-[#EF4444]/10 border border-[#EF4444]/20 rounded-lg px-3 py-2">
+                      <span className="mt-0.5">⚠</span>
+                      <span>{loginError}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center text-xs text-[#687280]">
                     <label className="flex items-center gap-2"><input type="checkbox" className="accent-[#145E32]" defaultChecked /> Remember me</label>
                     <a className="text-[#145E32] hover:underline" href="#">Forgot password?</a>
@@ -174,6 +192,7 @@ export function AuthScreens({
       <style>{`
         .auth-input { width: 100%; border: 1.5px solid #E5E7EB; border-radius: 12px; padding: 12px 14px; background: white; outline: none; transition: all .15s; font-family: Inter; font-size: 14px; color: #083026; }
         .auth-input:focus { border-color: #145E32; box-shadow: 0 0 0 4px rgba(20,94,50,0.08); }
+        .auth-input-error { border-color: #EF4444; box-shadow: 0 0 0 4px rgba(239,68,68,0.08); }
       `}</style>
     </div>
   );

@@ -188,14 +188,14 @@ function DashboardView({ members, events, scans, stats, openScanner }: any) {
       </div>
 
       {/* primary action strip */}
-      <div className="rounded-2xl p-5 flex items-center justify-between text-white shadow-lg"
+      <div className="rounded-2xl p-6 flex flex-wrap items-center justify-between gap-4 text-white shadow-lg"
         style={{ background: "linear-gradient(120deg, #083026 0%, #145E32 60%, #22C55E 130%)" }}>
-        <div>
+        <div className="min-w-0">
           <div className="text-[10px] uppercase tracking-[0.25em] text-[#22C55E]">Now Live</div>
           <div style={{ fontFamily: "Poppins", fontWeight: 600 }} className="text-xl mt-1">General Assembly · Attendance Open</div>
           <p className="text-sm text-white/70 mt-1">Scan member QR codes or enter Student IDs manually.</p>
         </div>
-        <button onClick={openScanner} className="bg-white text-[#083026] px-5 py-3 rounded-xl text-sm font-medium hover:bg-[#EBF5E9] transition flex items-center gap-2">
+        <button onClick={openScanner} className="bg-white text-[#083026] px-5 py-3 rounded-xl text-sm font-medium hover:bg-[#EBF5E9] transition inline-flex items-center gap-2 shrink-0">
           <Scan className="w-4 h-4" /> Open Scanner
         </button>
       </div>
@@ -247,7 +247,7 @@ function DashboardView({ members, events, scans, stats, openScanner }: any) {
             </ResponsiveContainer>
             <div className="absolute inset-0 grid place-items-center pointer-events-none">
               <div className="text-center">
-                <div style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: "28px" }} className="text-[#083026]">{Math.round((stats.active / stats.total) * 100)}%</div>
+                <div style={{ fontFamily: "Poppins", fontWeight: 700, fontSize: "28px" }} className="text-[#083026]">{stats.total === 0 ? 0 : Math.round((stats.active / stats.total) * 100)}%</div>
                 <div className="text-[10px] uppercase tracking-wider text-[#687280]">Active</div>
               </div>
             </div>
@@ -355,13 +355,13 @@ function AttendanceView({ events, scans, openScanner }: { events: Event[]; scans
   return (
     <div className="space-y-6">
       <div className="rounded-2xl p-6 text-white" style={{ background: "linear-gradient(120deg, #083026, #145E32)" }}>
-        <div className="flex items-start justify-between">
-          <div>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-[0.25em] text-[#22C55E] flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] animate-pulse" /> Live Event</div>
             <h3 style={{ fontFamily: "Poppins", fontWeight: 600 }} className="text-2xl mt-2">{live.name}</h3>
             <p className="text-white/70 text-sm mt-1">{live.date} · {live.attendees} checked in</p>
           </div>
-          <button onClick={() => openScanner(live.name)} className="bg-[#22C55E] hover:bg-[#16A34A] text-[#04150F] px-5 py-3 rounded-xl text-sm font-medium flex items-center gap-2">
+          <button onClick={() => openScanner(live.name)} className="bg-[#22C55E] hover:bg-[#16A34A] text-[#04150F] px-5 py-3 rounded-xl text-sm font-medium inline-flex items-center gap-2 shrink-0">
             <Scan className="w-4 h-4" /> Scan QR / Manual Entry
           </button>
         </div>
@@ -503,16 +503,16 @@ function ApprovalsView({ pending, onApprove, onReject }: { pending: typeof pendi
     <div className="space-y-3">
       <p className="text-sm text-[#687280]">New officer signups awaiting your approval.</p>
       {pending.map((p) => (
-        <div key={p.id} className="bg-white rounded-2xl p-5 border border-[#E5E7EB] flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#22C55E] to-[#145E32] grid place-items-center text-white font-medium">{p.name.split(" ").map((x) => x[0]).join("")}</div>
-          <div className="flex-1">
-            <div className="font-medium text-[#083026]">{p.name}</div>
-            <div className="text-xs text-[#687280]">{p.email} · Requested as {p.position}</div>
+        <div key={p.id} className="bg-white rounded-2xl p-5 border border-[#E5E7EB] flex flex-wrap items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#22C55E] to-[#145E32] grid place-items-center text-white font-medium shrink-0">{p.name.split(" ").map((x) => x[0]).join("")}</div>
+          <div className="flex-1 min-w-[180px]">
+            <div className="font-medium text-[#083026] truncate">{p.name}</div>
+            <div className="text-xs text-[#687280] break-words">{p.email} · Requested as {p.position}</div>
             <div className="text-[11px] text-[#687280] mt-0.5">Submitted {p.requested}</div>
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => onReject(p.id)} className="px-3 py-2 rounded-lg text-sm border border-[#E5E7EB] text-[#687280] hover:border-[#EF4444] hover:text-[#EF4444] flex items-center gap-1.5"><UserX className="w-4 h-4" /> Reject</button>
-            <button onClick={() => onApprove(p.id)} className="px-4 py-2 rounded-lg text-sm bg-[#083026] hover:bg-[#145E32] text-white flex items-center gap-1.5"><UserCheck className="w-4 h-4" /> Approve</button>
+          <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto justify-end">
+            <button onClick={() => onReject(p.id)} className="px-3 py-2 rounded-lg text-sm border border-[#E5E7EB] text-[#687280] hover:border-[#EF4444] hover:text-[#EF4444] inline-flex items-center gap-1.5"><UserX className="w-4 h-4" /> Reject</button>
+            <button onClick={() => onApprove(p.id)} className="px-4 py-2 rounded-lg text-sm bg-[#083026] hover:bg-[#145E32] text-white inline-flex items-center gap-1.5"><UserCheck className="w-4 h-4" /> Approve</button>
           </div>
         </div>
       ))}
@@ -523,14 +523,29 @@ function ApprovalsView({ pending, onApprove, onReject }: { pending: typeof pendi
 /* ──────────── Reports & Settings ──────────── */
 function ReportsView({ events, members }: { events: Event[]; members: Member[] }) {
   const [kind, setKind] = useState<"attendance" | "members" | "payments">("attendance");
-  const [preview, setPreview] = useState<{ title: string; rows: string[][]; headers: string[] } | null>(null);
+  const [range, setRange] = useState<"all" | "30d" | "90d" | "semester">("all");
+  const [hasGenerated, setHasGenerated] = useState(false);
+
+  const parseEventDate = (s: string) => { const t = Date.parse(s); return isNaN(t) ? null : t; };
+  const cutoff = useMemo(() => {
+    if (range === "all") return null;
+    const now = Date.now();
+    if (range === "30d") return now - 30 * 86400000;
+    if (range === "90d") return now - 90 * 86400000;
+    return now - 180 * 86400000;
+  }, [range]);
+
+  const filteredEvents = useMemo(() => {
+    if (!cutoff) return events;
+    return events.filter((e) => { const t = parseEventDate(e.date); return t === null ? true : t >= cutoff; });
+  }, [events, cutoff]);
 
   const buildReport = () => {
     if (kind === "attendance") {
       return {
         title: "Event Attendance Report",
         headers: ["Event", "Date", "Status", "Attendees"],
-        rows: events.map((e) => [e.name, e.date, e.status, String(e.attendees)]),
+        rows: filteredEvents.map((e) => [e.name, e.date, e.status, String(e.attendees)]),
       };
     }
     if (kind === "members") {
@@ -547,10 +562,12 @@ function ReportsView({ events, members }: { events: Event[]; members: Member[] }
     };
   };
 
-  const generate = () => setPreview(buildReport());
+  // Auto-refresh preview when filters change after first generate
+  const preview = hasGenerated ? buildReport() : null;
+  const generate = () => setHasGenerated(true);
 
   const download = () => {
-    const r = preview ?? buildReport();
+    const r = buildReport();
     const csv = [r.headers, ...r.rows].map((row) => row.map((c) => `"${c.replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -568,11 +585,18 @@ function ReportsView({ events, members }: { events: Event[]; members: Member[] }
           <FileText className="w-4 h-4 text-[#145E32]" />
           <span className="text-sm font-medium text-[#083026]">Generate Report</span>
         </div>
-        <select value={kind} onChange={(e) => { setKind(e.target.value as any); setPreview(null); }}
+        <select value={kind} onChange={(e) => setKind(e.target.value as any)}
           className="text-sm bg-[#F3F4F6] rounded-lg px-3 py-2 outline-none border border-transparent focus:border-[#145E32]">
           <option value="attendance">Event Attendance</option>
           <option value="members">Member Roster</option>
           <option value="payments">Payment Status</option>
+        </select>
+        <select value={range} onChange={(e) => setRange(e.target.value as any)}
+          className="text-sm bg-[#F3F4F6] rounded-lg px-3 py-2 outline-none border border-transparent focus:border-[#145E32]">
+          <option value="all">All time</option>
+          <option value="30d">Last 30 days</option>
+          <option value="90d">Last 90 days</option>
+          <option value="semester">This semester</option>
         </select>
         <div className="ml-auto flex items-center gap-2">
           <button onClick={generate} className="bg-[#083026] hover:bg-[#145E32] text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
@@ -591,7 +615,7 @@ function ReportsView({ events, members }: { events: Event[]; members: Member[] }
               <h3 style={{ fontFamily: "Poppins", fontWeight: 600 }} className="text-[#083026]">{preview.title}</h3>
               <p className="text-xs text-[#687280]">Generated {new Date().toLocaleString()} · {preview.rows.length} rows</p>
             </div>
-            <button onClick={() => setPreview(null)} className="text-xs text-[#687280] hover:text-[#145E32]">Clear</button>
+            <button onClick={() => setHasGenerated(false)} className="text-xs text-[#687280] hover:text-[#145E32]">Clear</button>
           </div>
           <div className="max-h-[320px] overflow-auto">
             <table className="w-full text-sm">
