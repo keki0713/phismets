@@ -13,6 +13,12 @@ import { initialMembers, initialEvents, initialScans, pendingSignups, type Membe
 
 type Tab = "dashboard" | "attendance" | "members" | "events" | "approvals" | "reports" | "settings";
 
+/**
+ * Main admin dashboard for PHISMETS officers.
+ * Manages members, events, attendance scans, pending approvals, and reports.
+ * @param onLogout - Callback function to handle officer logout
+ */
+
 export function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("dashboard");
   const [members, setMembers] = useState<Member[]>(initialMembers);
