@@ -3,6 +3,12 @@ import { motion, AnimatePresence } from "motion/react";
 import { X, Zap, CheckCircle2, AlertCircle, Keyboard, Scan } from "lucide-react";
 import type { Member } from "./mockData";
 
+/**
+ * QR code scanner for event attendance tracking.
+ * Handles check-in and check-out by scanning member QR ID codes.
+ * Maintains a real-time scan log limited to the last 30 entries.
+ */
+
 export function QRScanner({
   open, onClose, members, eventName, onLog,
 }: {

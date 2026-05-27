@@ -4,6 +4,12 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { Logo } from "./Logo";
 import { initialMembers, initialEvents } from "./mockData";
 
+/**
+ * Member-facing portal for PHISMETS.
+ * Displays the member's attendance history, event participation, and profile.
+ * @param onLogout - Callback function to handle member logout
+ */
+
 export function MemberPortal({ memberId, onLogout }: { memberId: string; onLogout: () => void }) {
   const member = initialMembers.find((m) => m.id === memberId) ?? initialMembers[0];
   const attendanceRate = Math.round((member.attended / (member.attended + member.missed || 1)) * 100);
