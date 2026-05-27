@@ -4,7 +4,12 @@ import { Eye, EyeOff, ArrowRight, CheckCircle2, Scan, Clock, FileText, Activity 
 import { Logo } from "./Logo";
 
 type Mode = "landing" | "login" | "signup" | "member" | "signupSuccess";
-
+/**
+ * Authentication entry point for PHISMETS.
+ * Renders the landing screen and handles routing to admin or member login and signup flows.
+ * @param onAdminLogin - Callback fired when an officer successfully logs in
+ * @param onMemberLogin - Callback fired when a member successfully logs in
+ */
 export function AuthScreens({
   onAdminLogin,
   onMemberLogin,
