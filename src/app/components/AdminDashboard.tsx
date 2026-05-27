@@ -19,6 +19,8 @@ type Tab = "dashboard" | "attendance" | "members" | "events" | "approvals" | "re
  * @param onLogout - Callback function to handle officer logout
  */
 
+// Dashboard color tokens follow the PHISMETS brand guide (see STYLE_GUIDE.md)
+
 export function AdminDashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("dashboard");
   const [members, setMembers] = useState<Member[]>(initialMembers);
